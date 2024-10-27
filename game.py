@@ -21,9 +21,29 @@ class Spaceship(pygame.sprite.Sprite):
         elif color == "red":
             self.image = pygame.image.load("Lesson 5/images/redship.png")
             self.image = pygame.transform.rotate(self.image,270)
+        self.color = color
         self.image = pygame.transform.scale(self.image,(ship_width,ship_height))
         self.rect = self.image.get_rect()
         self.rect.topleft = x,y
+    def handle_movements(self,keys_pressed):
+        if self.color == "yellow":
+            if keys_pressed[pygame.K_w] and self.rect.y > 50:
+                self.rect.y -= 5
+            if keys_pressed[pygame.K_a]:
+                self.rect.x -= 5
+            if keys_pressed[pygame.K_s] and self.rect.y < 500:
+                self.rect.y += 5
+            if keys_pressed[pygame.K_d]:
+                self.rect.x +=5
+        if self.color == "red":
+            if keys_pressed[pygame.K_UP] and self.rect.y > 50:
+                self.rect.y -= 5
+            if keys_pressed[pygame.K_DOWN] and self.rect.y < 500:
+                self.rect.y += 5
+            if keys_pressed[pygame.K_LEFT]:
+                self.rect.x -= 5
+            if keys_pressed[pygame.K_RIGHT]:
+                self.rect.x +=5
 
 red = Spaceship(700,HEIGHT/2,"red")
 yellow = Spaceship(300,HEIGHT/2,"yellow")
@@ -38,4 +58,7 @@ while run:
     pygame.draw.rect(screen,"white",border)
     screen.blit(red.image,red.rect.topleft)
     screen.blit(yellow.image,yellow.rect.topleft)
+    keys_pressed = pygame.key.get_pressed()
+    red.handle_movements(keys_pressed)
+    yellow.handle_movements(keys_pressed)
     pygame.display.update()
